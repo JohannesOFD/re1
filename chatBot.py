@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# chatBot.py - lokaler Chatbot
+# hello.py - einfacher lokaler Chatbot zum Testen (UTC mit timezone-aware datetime)
 
 import sys
 import time
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 
 LOGFILE = "chatbot.log"
 
@@ -22,7 +22,7 @@ JOKES = [
 ]
 
 def log(message: str) -> None:
-    ts = datetime.utcnow().isoformat()
+    ts = datetime.now(timezone.utc).isoformat()
     with open(LOGFILE, "a", encoding="utf-8") as f:
         f.write(f"{ts} {message}\n")
 
@@ -38,7 +38,7 @@ def handle_intent(intent: str, text: str) -> str:
     if intent == "greet":
         return "Hallo! Wie kann ich dir helfen?"
     if intent == "time":
-        return "Aktuelle Uhrzeit (UTC): " + datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        return "Aktuelle Uhrzeit (UTC): " + datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     if intent == "joke":
         return random.choice(JOKES)
     if intent == "bye":
@@ -46,7 +46,6 @@ def handle_intent(intent: str, text: str) -> str:
     return echo_response(text)
 
 def echo_response(text: str) -> str:
-    # einfache Verarbeitung: wiederhole und zeige Länge
     text_stripped = text.strip()
     return f"Du hast gesagt: \"{text_stripped}\" (Länge: {len(text_stripped)})"
 
@@ -77,7 +76,6 @@ def interactive_loop():
         log("Session ended")
 
 if __name__ == "__main__":
-    # Optional: akzeptiere einen Einzeiler über CLI zur schnellen Automatisierung/tests
     if len(sys.argv) > 1:
         query = " ".join(sys.argv[1:])
         intent = detect_intent(query)
