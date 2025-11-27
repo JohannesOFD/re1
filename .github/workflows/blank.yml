@@ -17,17 +17,19 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
+          distribution: 'adopt'  # Hier die Verteilung hinzufügen
 
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Deploy to GitHub Pages
         run: |
-          cp -r build/distributions/* ../public
-          cd ../
+          mkdir -p public
+          cp -r build/distributions/* public
+          cd public
           git init
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
-          git add public
+          git add .
           git commit -m "Deploy to GitHub Pages"
-          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
