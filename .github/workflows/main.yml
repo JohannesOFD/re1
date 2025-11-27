@@ -2,8 +2,17 @@ name: CI - build, test, deploy, release
 
 on:
   push:
+    branches: [ "main", "dev" ]
+  pull_request:
     branches: [ "main" ]
+    paths:
+      - "src/**"
+      - "docs/**"
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"   # every 5th minute
+  issues:
+    types: [closed]
 
 permissions:
   contents: write   # braucht write-Permission, damit git push funktioniert bei auto-commits
