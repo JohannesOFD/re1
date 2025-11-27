@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # hello.py - einfacher lokaler Chatbot zum Testen (UTC mit timezone-aware datetime)
 
+import random
 import sys
 import time
-import random
 from datetime import datetime, timezone
 
 LOGFILE = "chatbot.log"
@@ -21,10 +21,12 @@ JOKES = [
     "Warum ging der Pilz auf die Party? Weil er ein Champignon war.",
 ]
 
+
 def log(message: str) -> None:
     ts = datetime.now(timezone.utc).isoformat()
     with open(LOGFILE, "a", encoding="utf-8") as f:
         f.write(f"{ts} {message}\n")
+
 
 def detect_intent(text: str) -> str:
     t = text.lower()
@@ -34,20 +36,25 @@ def detect_intent(text: str) -> str:
                 return intent
     return "unknown"
 
+
 def handle_intent(intent: str, text: str) -> str:
     if intent == "greet":
         return "Hallo! Wie kann ich dir helfen?"
     if intent == "time":
-        return "Aktuelle Uhrzeit (UTC): " + datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        return "Aktuelle Uhrzeit (UTC): " + datetime.now(timezone.utc).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
     if intent == "joke":
         return random.choice(JOKES)
     if intent == "bye":
         return "Tschüss! Ich beende mich jetzt."
     return echo_response(text)
 
+
 def echo_response(text: str) -> str:
     text_stripped = text.strip()
-    return f"Du hast gesagt: \"{text_stripped}\" (Länge: {len(text_stripped)})"
+    return f'Du hast gesagt: "{text_stripped}" (Länge: {len(text_stripped)})'
+
 
 def interactive_loop():
     print("Einfacher Chatbot. Tippe 'ende' oder Ctrl+C zum Beenden.")
@@ -74,6 +81,7 @@ def interactive_loop():
         log(err)
     finally:
         log("Session ended")
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
