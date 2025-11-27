@@ -1,2 +1,2 @@
 Bla bla bla bla bla
-Added something
+Added something #1 can be closed
