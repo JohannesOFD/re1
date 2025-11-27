@@ -87,6 +87,9 @@ jobs:
           git add .
           git diff --cached --quiet || (git commit -m "chore: auto-format / sort imports" && git push)
 
+      - name: Lint (ruff)
+        run: ruff check . --fix
+
   test:
     runs-on: ubuntu-latest
     needs: build
