@@ -1,6 +1,5 @@
 # tests/test_chatbot.py
 import re
-from datetime import datetime, timezone
 
 from chatBot import detect_intent, echo_response, handle_intent
 
