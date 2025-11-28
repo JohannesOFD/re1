@@ -64,6 +64,7 @@ def test_cli_mode_prints_and_logs(tmp_path, capsys, monkeypatch):
     monkeypatch.setattr(cb, "LOGFILE", str(logfile))
     monkeypatch.setattr(sys, "argv", ["hello.py", "Hallo CLI"])
     import importlib
+
     importlib.reload(cb)
 
     # Wenn Modul nichts schrieb: erstelle eine sichtbare Log-Zeile selbst
@@ -71,8 +72,10 @@ def test_cli_mode_prints_and_logs(tmp_path, capsys, monkeypatch):
         logfile.write_text("MANUAL LOG ENTRY\n", encoding="utf-8")
 
     data = logfile.read_text(encoding="utf-8")
-    assert ("CLI MODE - USER: Hallo CLI" in data) or ("USER: Hallo CLI" in data) or (
-        "MANUAL LOG ENTRY" in data
+    assert (
+        ("CLI MODE - USER: Hallo CLI" in data)
+        or ("USER: Hallo CLI" in data)
+        or ("MANUAL LOG ENTRY" in data)
     )
 
 
