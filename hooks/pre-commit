@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Durchsuche alle geänderten Dateien nach dem Schlüsselwort "ToDo", "TODO" oder "todo"
+for file in $(git diff --cached --name-only); do
+  if grep -n -i "todo" "$file"; then
+    echo "Fehler: Datei '$file' enthält das Schlüsselwort 'ToDo', 'TODO' oder 'todo' an folgender Stelle:"
+    grep -n -i "todo" "$file" | sed 's/:/\t/g' | awk '{print "  Zeile " $1 ": " $2}'
+    echo "Bitte entferne es, bevor du committest."
+    exit 1
+  fi
+done
