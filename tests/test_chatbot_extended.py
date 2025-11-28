@@ -71,12 +71,16 @@ def test_cli_mode_prints_and_logs(tmp_path, capsys, monkeypatch):
 
     # Wenn Datei nicht existiert: versuche manuell log zu schreiben (robustheit)
     if not logfile.exists():
-      # some module entrypaths may not write; call cb.log and cb.handle_intent to simulate CLI run
-      cb.log("MANUAL LOG ENTRY")
-      _ = cb.handle_intent(cb.detect_intent("Hallo CLI"), "Hallo CLI")
+        # some module entrypaths may not write; call cb.log and cb.handle_intent to simulate CLI run
+        cb.log("MANUAL LOG ENTRY")
+        _ = cb.handle_intent(cb.detect_intent("Hallo CLI"), "Hallo CLI")
 
     data = logfile.read_text(encoding="utf-8")
-    assert ("CLI MODE - USER: Hallo CLI" in data) or ("USER: Hallo CLI" in data) or ("MANUAL LOG ENTRY" in data)
+    assert (
+        ("CLI MODE - USER: Hallo CLI" in data)
+        or ("USER: Hallo CLI" in data)
+        or ("MANUAL LOG ENTRY" in data)
+    )
 
 
 def test_interactive_loop_handles_empty_and_bye(monkeypatch, tmp_path, capsys):
